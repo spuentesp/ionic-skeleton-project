@@ -1,0 +1,14 @@
+{
+  "name": "ionic-skeleton",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "sass",
+    "watch",
+    "default"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*",
+    "!www/**/*.map"
+  ]
+}
