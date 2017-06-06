@@ -5,7 +5,7 @@ angular.module('Core').provider('LocalStorageProvider', function() {
   return {
     $get: ['$rootScope', '$window',
       function($rootScope, $window) {
-        var getLocalStorageItem = function(key) {
+      var getLocalStorageItem = function(key) {
           var item = $window.localStorage.getItem(key);
           if (item) {
             return item;
