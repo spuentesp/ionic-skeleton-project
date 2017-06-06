@@ -3,6 +3,7 @@
 
   const gulp = require('gulp');
   const gutil = require('gulp-util');
+  const gulpif = require('gulp-if');
   const bower = require('bower');
   const concat = require('gulp-concat');
   const sass = require('gulp-sass');
@@ -185,6 +186,11 @@
   //QA-TASKS
 
   //Global Task
+  function isFixed(file) {
+    // Has ESLint fixed the file contents?
+    return file.eslint != null && file.eslint.fixed;
+  }
+
   gulp.task('jshint', function () {
     return gulp.src(codeBasePath)
       .pipe(jshint('.jshintrc'))
@@ -193,7 +199,8 @@
   gulp.task('eslint', function () {
     return gulp.src(codeBasePath)
       .pipe(eslint('.eslintrc'))
-      .pipe(eslint.format());
+      .pipe(eslint.format())
+      .pipe(gulp.dest('./lintfixes/'));
   });
   gulp.task('checkstyle', function () {
     return gulp.src(codeBasePath)

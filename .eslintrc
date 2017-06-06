@@ -7,12 +7,12 @@
         /* These rules relate to possible syntax or logic errors in JavaScript code
         /***************************************************************************/
 
-    "no-await-in-loop": ["error"], //disallow await inside of loops
-    "no-compare-neg-zero": ["error"], //disallow comparing against -0
-    "no-extra-parens": ["error", "all", { "nestedBinaryExpressions": false }], //disallow unnecessary parentheses
-    "no-prototype-builtins": ["error"], //disallow calling some Object.prototype methods directly on objects
-    "no-template-curly-in-string": ["warn"], //disallow template literal placeholder syntax in regular strings
-    "valid-jsdoc": ["warn"], //enforce valid JSDoc comments
+    //"no-await-in-loop": ["error"], //disallow await inside of loops
+    //"no-compare-neg-zero": ["error"], //disallow comparing against -0
+    //"no-extra-parens": ["error", "all", { "nestedBinaryExpressions": false }], //disallow unnecessary parentheses
+    //"no-prototype-builtins": ["error"], //disallow calling some Object.prototype methods directly on objects
+    //"no-template-curly-in-string": ["warn"], //disallow template literal placeholder syntax in regular strings
+    //"valid-jsdoc": ["warn"], //enforce valid JSDoc comments
 
     //Extended from "eslint:recommended"
     // "no-cond-assign": [], //disallow assignment operators in conditional expressions
@@ -289,5 +289,6 @@
     // "no-new-symbol": [], //disallow new operators with the Symbol object
     // "no-this-before-super": [], //disallow this/super before calling super() in constructors
     // "require-yield": [], //require generator functions to contain yield
-  }
+  },
+  "fix":true
 }

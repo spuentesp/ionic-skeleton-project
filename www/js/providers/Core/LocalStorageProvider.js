@@ -1,16 +1,16 @@
 /**
  * Created by rodrigopalmafanjul on 20-04-17.
  */
-angular.module('Core').provider('LocalStorageProvider', function() {
+angular.module("Core").provider("LocalStorageProvider", function() {
   return {
-    $get: ['$rootScope', '$window',
+    $get: ["$rootScope", "$window",
       function($rootScope, $window) {
       var getLocalStorageItem = function(key) {
           var item = $window.localStorage.getItem(key);
           if (item) {
             return item;
           } else
-            return '';
+            return "";
 
         };
 
