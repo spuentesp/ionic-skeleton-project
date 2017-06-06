@@ -1,21 +1,21 @@
-angular.module('Core').provider('ConnectionProvider', function() {
+angular.module("Core").provider("ConnectionProvider", function() {
   var uniqueRequests = false;
   var requests = [];
   Object.toparams = function(obj) {
     var p = [];
     for (var key in obj) {
-      p.push(key + '=' + encodeURIComponent(obj[key]));
+      p.push(key + "=" + encodeURIComponent(obj[key]));
     }
-    return p.join('&');
+    return p.join("&");
   };
 
   return {
-    $get: ['$rootScope', '$http', 'UtilsService', '$log', '$q', 'ENDPOINTS',
+    $get: ["$rootScope", "$http", "UtilsService", "$log", "$q", "ENDPOINTS",
       function($rootScope, $http, UtilsService, $log, $q, ENDPOINTS) {
 
         var doRequest = function(endpoint, params, data, headers, success, failure, method) {
           var id = _.uniqueId();
-          $log.debug('[' + id + '] REQUEST ' + method, endpoint);
+          $log.debug("[" + id + "] REQUEST " + method, endpoint);
           var defer = $q.defer();
           defer.promise.then(function(response) {
             success(response);
@@ -25,7 +25,7 @@ angular.module('Core').provider('ConnectionProvider', function() {
 
           var request = {
             method: method,
-            responseType: 'json',
+            responseType: "json",
             url: endpoint,
             headers: headers,
             params: params,
@@ -40,18 +40,18 @@ angular.module('Core').provider('ConnectionProvider', function() {
             requests.push(request);
             $http(request).then(function(response) {
               requests = _.drop(requests, request);
-              $log.groupCollapsed('[' + id + '] RESULT REQUEST ' + method.toUpperCase() + '[' + endpoint + ']');
-              $log.debug('Params: ', params);
-              $log.debug('Data: ', data);
-              $log.debug('Response: ', response);
+              $log.groupCollapsed("[" + id + "] RESULT REQUEST " + method.toUpperCase() + "[" + endpoint + "]");
+              $log.debug("Params: ", params);
+              $log.debug("Data: ", data);
+              $log.debug("Response: ", response);
               $log.groupEnd();
               defer.resolve(response);
             }, function(err) {
               requests = _.drop(requests, request);
-              $log.groupCollapsed('[' + id + '] ERROR REQUEST ' + method.toUpperCase() + ' [' + endpoint + ']');
-              $log.error('Params: ', params);
-              $log.error('Data: ', data);
-              $log.error('Response: ', err);
+              $log.groupCollapsed("[" + id + "] ERROR REQUEST " + method.toUpperCase() + " [" + endpoint + "]");
+              $log.error("Params: ", params);
+              $log.error("Data: ", data);
+              $log.error("Response: ", err);
               $log.groupEnd();
               if (err.data == null) { //timeout
                 err = timeoutError;
@@ -66,27 +66,27 @@ angular.module('Core').provider('ConnectionProvider', function() {
         };
 
         var sendPost = function(endpoint, params, data, headers, success, failure) { // jshint ignore:line
-          doRequest(endpoint, params, data, headers, success, failure, 'POST');
+          doRequest(endpoint, params, data, headers, success, failure, "POST");
         };
 
         var sendGet = function(endpoint, params, data, headers, success, failure) { // jshint ignore:line
-          doRequest(endpoint, params, data, headers, success, failure, 'GET');
+          doRequest(endpoint, params, data, headers, success, failure, "GET");
         };
 
         var sendPut = function(endpoint, params, data, headers, success, failure) { // jshint ignore:line
-          doRequest(endpoint, params, data, headers, success, failure, 'PUT');
+          doRequest(endpoint, params, data, headers, success, failure, "PUT");
         };
 
         var sendDelete = function(endpoint, params, data, headers, success, failure) { // jshint ignore:line
-          doRequest(endpoint, params, data, headers, success, failure, 'DELETE');
+          doRequest(endpoint, params, data, headers, success, failure, "DELETE");
         };
 
 
 
         var timeoutError = {
           data: {
-            status: '408',
-            msg: 'Se alcanzó el tiempo máximo de espera'
+            status: "408",
+            msg: "Se alcanzó el tiempo máximo de espera"
           },
           status: 408
         };

@@ -1,1 +1,1 @@
-angular.module('Core', [])
+angular.module("Core", []);
