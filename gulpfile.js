@@ -154,3 +154,15 @@ gulp.task('release',['release-prepare'],function(done){
     }))
     .pipe(gulp.dest('./', {cwd: './www'}))
 });
+
+
+/****TESTING***/
+
+var Server = require('karma').Server;
+
+gulp.task('test', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: false
+  }, done).start()
+});
