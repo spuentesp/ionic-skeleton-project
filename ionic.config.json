@@ -2,9 +2,8 @@
   "name": "ionic-skeleton",
   "app_id": "",
   "gulpStartupTasks": [
-    "sass",
     "watch",
-    "default"
+    "dev"
   ],
   "watchPatterns": [
     "www/**/*",

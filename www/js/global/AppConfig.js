@@ -1,4 +1,4 @@
-angular.module('starter').config(function($stateProvider, $urlRouterProvider) {
+angular.module('app').config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
     .state('blank', {
       url: '/blank',
@@ -8,4 +8,4 @@ angular.module('starter').config(function($stateProvider, $urlRouterProvider) {
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/blank');
-});
+})

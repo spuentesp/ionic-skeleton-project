@@ -16,11 +16,21 @@ var htmlreplace = require('gulp-html-replace');
 
 var paths = {
   sass: ['./scss/**/*.scss'],
-  js:['./www/js/**/*.js']
+  js:['' +
+  './js/*.js',
+    './js/endpoints/*.js',
+    './js/translations/*.js',
+    './js/modules/*.js',
+    './js/modules/**/*.js',
+    './js/global/*.js',
+    './js/providers/*.js',
+    './js/providers/**/*.js',
+    './js/services/*.js',
+    './js/services/**/*.js',
+    './js/controllers/**/*.js']
 };
-var specificPath = '';
 
-gulp.task('default', ['dev','watch']);
+gulp.task('default', ['watch']);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
@@ -35,11 +45,9 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
-gulp.task('watch',  function() {
+gulp.task('watch',['dev'],  function() {
   gulp.watch(paths.sass, ['sass']);
-  gulp.watch(paths.js).on('change', function (file) {
-    gulp.task('dev');
-  });
+  //gulp.watch(paths.js,['dev'])
 });
 
 gulp.task('install', ['git-check'], function() {
@@ -62,7 +70,8 @@ gulp.task('git-check', function(done) {
   done();
 });
 
-gulp.task('clean-bower', function(){
+/***copia las librerias de bower components a lib***/
+gulp.task('clean-bower', function(done){
   return gulp.src('./bower.json')
     .pipe(mainBowerFiles({
       includeDev: true,
@@ -70,57 +79,48 @@ gulp.task('clean-bower', function(){
         ionic: {
           main: [
             'fonts/*',
-            'css/*',
-            'scss/**/*.scss',
+            'css/ionic.css',
             'scss/*.scss',
+            'scss/**/*.scss',
             'js/ionic.bundle.js'
           ]
         },
-        angular:{
+        'angular-i18n': {
           main: [
+            'angular-locale_es-cl.js'
           ]
         }
       }
     }))
     //
-    .pipe(gulp.dest('./www/lib/'));
+    .pipe(gulp.dest('./www/lib/'))
 });
 
-gulp.task('inject', ['clean-bower'], function(){
+gulp.task('inject', ['clean-bower'], function(done){
   var target = gulp.src('index.html', {cwd: './www'});
   var sources = gulp.src(
-    ['./lib/ionic/**/*.js', './lib/**/*.js'], {base: './lib', cwd: './www'});
-  return target.pipe(inject(sources, {name: 'bower', relative: true}))
-    .pipe(gulp.dest('./', {cwd: './www'}));
+    ['./lib/ionic/**/*.js','./lib/**/*.js'], {base: './lib', cwd: './www'});
+  return target
+    .pipe(inject(sources, {name: 'bower', relative: true}))
+    .pipe(gulp.dest('./', {cwd: './www'}))
 });
 
 
 
 gulp.task('inject-project', ['inject'], function(){
   var target = gulp.src('index.html', {cwd: './www'});
-  var sources = gulp.src(['' +
-    './js/modules/*.js',
-    './js/modules/**/*.js',
-    './js/global/*.js',
-    './js/global/**/*.js',
-    './js/providers/**/*.js',
-    './js/factories/**/*.js',
-    './js/controllers/**/*.js'], {base: './js', cwd: './www'});
+  var sources = gulp.src(paths.js, {base: './js', cwd: './www'});
   return target
     .pipe(inject(sources.pipe(angularFilesort()), {name: 'proyecto', relative: true}))
-    .pipe(gulp.dest('./', {cwd: './www'}));
+    .pipe(gulp.dest('./', {cwd: './www'}))
 });
 
-gulp.task('beautify', ['inject-project'], function(){
-  gulp.src(['' +
-  './js/modules/*.js',
-    './js/modules/**/*.js',
-    './js/global/*.js',
-    './js/global/**/*.js',
-    './js/providers/**/*.js',
-    './js/factories/**/*.js',
-    './js/controllers/**/*.js'])
-    .pipe(beautify({indent_size: 2}))
+
+
+gulp.task('beautify', ['inject-project'], function(done){
+  var sources = gulp.src(paths.js, {base: './js', cwd: './www'});
+
+  return sources.pipe(beautify({indent_size: 2}))
     .pipe(gulp.dest('./js/'))
 });
 
@@ -129,29 +129,22 @@ gulp.task('dev',['beautify']);
 
 
 /***task para release***/
-gulp.task('release-prepare', function(done) {
-  gulp.src(['' +
-    './js/modules/*.js',
-    './js/modules/**/*.js',
-    './js/global/*.js',
-    './js/global/**/*.js',
-    './js/providers/**/*.js',
-    './js/factories/**/*.js',
-    './js/controllers/**/*.js'], {base: './js', cwd: './www'})
-    .pipe(ngAnnotate({single_quotes: true}))
+gulp.task('release-prepare',['inject'], function() {
+  var sources = gulp.src(paths.js, {base: './js', cwd: './www'});
+  return sources
     .pipe(angularFilesort())
-    .pipe(concat('miMovistar.min.js'))
+    .pipe(ngAnnotate({single_quotes: true}))
+    .pipe(concat('app.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('./dist', {cwd: './www'}))
-    .on('end', done);
+    .pipe(gulp.dest('./', {cwd: './www'}))
 });
 
 
 gulp.task('release',['release-prepare'],function(done){
-  gulp.src('index.html', {cwd: './www'})
+  return gulp.src('index.html', {cwd: './www'})
     .pipe(htmlreplace({
       'js': {
-        src: ['dist/app.min.js'],
+        src: ['app.min.js'],
         tpl: '<!-- build:js --> \n' +
         '<!-- proyecto:js --> \n ' +
         '<script src="%s"></script>\n' +
@@ -160,7 +153,4 @@ gulp.task('release',['release-prepare'],function(done){
       }
     }))
     .pipe(gulp.dest('./', {cwd: './www'}))
-    .on('end', done);
 });
-
-
