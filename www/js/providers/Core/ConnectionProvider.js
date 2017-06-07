@@ -1,4 +1,4 @@
-angular.module("Core").provider("ConnectionProvider", function() {
+angular.module("Core").provider("ConnectionProvider", function() { // eslint-disable-line no-undef
   var uniqueRequests = false;
   var requests = [];
   Object.toparams = function(obj) {

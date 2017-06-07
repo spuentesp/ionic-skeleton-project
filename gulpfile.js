@@ -198,7 +198,7 @@
   });
   gulp.task('eslint', function () {
     return gulp.src(codeBasePath)
-      .pipe(eslint('.eslintrc'))
+      .pipe(eslint('.eslintrc.js'))
       .pipe(eslint.format())
       .pipe(gulp.dest('./lintfixes/'));
   });

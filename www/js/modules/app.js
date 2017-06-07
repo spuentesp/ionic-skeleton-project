@@ -1,1 +1,1 @@
-var app = angular.module("app", ["ionic", "Core"]);
+var app = angular.module("app", ["ionic", "Core"]); // eslint-disable-line no-undef
