@@ -34,6 +34,9 @@ este script inyectara todos los archivos del proyecto y librerias en index.html 
 * gulp release
 
 este script concatenara todos los archivos de proyecto en un solo JS, creara las importaciones explicitas, y minifica el codigo. elimina las inyecciones de archivos separados, dejando solo el js minificado
+## Calidad de codigo
+* gulp qa
+Esto ejecutara ESLint para inspeccion de codigo. Las reglas estan definidas en .eslintrc
 
 ## Pruebas unitarias
 * gulp test
